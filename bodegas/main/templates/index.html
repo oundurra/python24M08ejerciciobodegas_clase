@@ -1,0 +1,29 @@
+{% include 'basehead.html' %}
+
+<body class="p-2">
+    {% include 'menu.html' %}
+
+    <h1>Noticias de Interés</h1>
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        {% for noticia in noticias %}
+        <div class="col">
+            <div class="card">
+                <img class="card-img-top" src="/static/img/noticias/{{ noticia.imagen_url }}" alt="Sin Foto">
+                <div class="card-body">
+                    <h5 class="card-title">{{ noticia.titulo }}</h5>
+                    <p class="card-text">{{ noticia.cuerpo }}</p>
+                    {% if user.is_authenticated %}
+                    {% if noticia.like_me > 0%}
+                    <p class="card-text"> {{ noticia.likes }} <a href="{% url 'remove_like' user.id noticia.id %}"><img src="/static/img/red_heart.png" width="20" height="20"></a></p>
+                    {% else %}
+                    <p class="card-text"> {{ noticia.likes }} <a href="{% url 'add_like' user.id noticia.id %}"><img src="/static/img/white_heart.png" width="20" height="20"></a></p>
+                    {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% include 'base.html' %}
+</body>

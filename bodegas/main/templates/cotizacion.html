@@ -1,0 +1,62 @@
+{% include 'basehead.html' %}
+
+<body class="p-2">
+    {% include 'menu.html' %}
+
+    <h1>Cotizacion</h1>
+    {% include 'base.html' %}
+
+    <h3>Seleccion de Bodegas</h3>
+    <h4>Tipos de Bodega</h4>
+    <form method="post" novalidate>
+        <input type="hidden" id="lista_bodegas" name="lista_bodegas" value="{{ lista_bodegas }}">
+        {% csrf_token %}
+        {{ tipo_bodega_form }}
+        <input type="submit" formaction="{% url 'cotizacion' %}" value="Filtrar">
+
+        <h4>Seleccione una bodega</h4>
+        {{ bodega_form }}
+        <input type="submit" formaction="{% url 'agrega_bodega' %}" value="Agregar">
+
+        <h2>Bodegas Seleccionadas</h2>
+        <table id="bodegas">
+            {% for bodega in bodegas_sel %}
+            <tr>
+                <td>
+                    Bodega {{ bodega.codigo }}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+        <h2>Monto Total:
+            <input type="text" id="monto_total" name="monto_total" value="{{ monto_total }}">
+        </h2>
+
+        <h3>Tipos Bodega</h3>
+        <table class="table">
+            <tr>
+                <th>Tipo</th>
+                <th>Tamaño</th>
+                <th>Precio</th>
+            </tr>
+            {% for tipo_bodega in tipos_bodega %}
+            <tr>
+                <td>{{ tipo_bodega.tipo }}</td>
+                <td>{{ tipo_bodega.metros }}m2</td>
+                <td>{{ tipo_bodega.precio }}</td>
+                <td>
+                    {% if tipo_bodega.quimicos %}
+                    Bodega compatible con quimicos industriales.
+                    {% endif %}
+                    {% if tipo_bodega.organicos %}
+                    Además, compatible con material organico.
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
+
+    </form>
+
+</body>
